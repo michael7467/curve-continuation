@@ -19,8 +19,10 @@ pip install -e ".[solver,dev]"
 pytest and ruff; if the solver already runs on your computer, `pip install -e ".[dev]"` is enough. The scripts also
 run without installing, from the project folder.
 
-Put the group's solver next to the code, as `RL_puzzle_solver/new_code` inside this folder, or write its path in
-`configs/default.yaml` under `solver: folder:` (an absolute path is fine). Puzzles are written to its `data/` folder.
+Put the group's solver inside this folder as `RL_puzzle_solver/new_code`, or anywhere else and write its path in
+`configs/default.yaml` under `solver: folder:`. A relative path is read from the project folder, so
+`../RL_puzzle_solver/new_code` is a solver folder next to the project; an absolute path works too. Puzzles are written
+to the solver's `data/` folder.
 
 ## Run
 
@@ -46,7 +48,9 @@ python scripts/check_pairs.py configs/experiments/frescoes_lap.yaml    # right /
 ```
 
 `compare.py` and `check_pairs.py` use the newest puzzle of each picture, so `run_dataset.py` has to run first, once
-per dataset (experiments on the same dataset share the puzzles). Other useful forms:
+per dataset (experiments on the same dataset share the puzzles). The solver column of `check_pairs.py` counts the
+largest group of pieces that are right together, whatever the shift of the whole layout, so it can be a little higher
+than `compare.py`, which counts relative to the anchor piece. Other useful forms:
 
 ```
 python scripts/run_pipeline.py configs/experiments/frescoes_lap.yaml --picture fresco_03
@@ -56,8 +60,24 @@ python scripts/make_frescoes.py --n 50 --seed 7 --out datasets/frescoes_50.yaml
 
 ### Expected results
 
-Pieces in the right place, total over the dataset. `run_dataset.py` uses biarc with found ends, which is the first
-column of `compare.py`.
+Pieces in the right place with the current extraction (both fixes in [Extraction](#extraction)). `run_dataset.py`
+uses biarc with found ends.
+
+| experiment | pictures | found ends (`run_dataset.py`) | exact ends (`compare.py`) |
+|---|---|---|---|
+| `canvases_baseline` | 10 canvases, one closed curve each, best single join per side | 74 / 90 | 80 / 90 |
+| `multi_lap` | 6 pictures with several curves, one-to-one matching (LAP) | 49 / 54 | 52 / 54 |
+| `frescoes_lap` | 20 fresco-like pictures, LAP | 161 / 180 | 177 / 180 |
+| `colour_lap` | the same pictures in fresco colours, geometry only | 163 / 180 | 177 / 180 |
+
+Exact ends do not depend on extraction, so their results are the same as before the fixes. The co-circularity columns
+of `compare.py`, and the experiments `frescoes_order`, `colour_features`, `colour_clothoid` and `colour_nfa`, have not
+been run with the new extraction yet; their results with the original extraction are below.
+
+### Results with the original extraction
+
+Before the two extraction fixes. On these, the package reproduces the original scripts exactly (same pictures, same
+ends file for file, same solver totals).
 
 | experiment | what it shows | compare.py: found ends | exact ends |
 |---|---|---|---|
@@ -70,10 +90,50 @@ column of `compare.py`.
 | `colour_clothoid` | plus curvature checked against the clothoid | biarc 150/180, clothoid 152/180 | 178/180, 178/180 |
 | `colour_nfa` | all features plus the a contrario test | biarc 152/180, clothoid 154/180 | 178/180, 177/180 |
 
-`check_pairs.py configs/experiments/colour_features.yaml` gives 364 right, 36 wrong, 114 negative pairs for biarc
-with found ends. Its solver column counts the largest group of pieces that are right together, whatever the shift of
-the whole layout, so it can be a little higher than `compare.py`, which counts relative to the anchor piece. These are the numbers of the scripts before the restructure; the package reproduces them exactly
-(same pictures, same ends file for file, same 64 pair counts in `tests/data/reference.json`, same solver totals).
+`check_pairs.py configs/experiments/colour_features.yaml` gave 364 right, 36 wrong, 114 negative pairs for biarc with
+found ends.
+
+## Extraction
+
+`src/curvecont/extraction/ends.py` measures every place where paint touches a piece border:
+
+1. Paint: each pixel's colour distance to its local background (median over `extraction.window` px).
+2. Centre line: a ridge detector (the idea of Steger's line detector) finds the middle of each stroke with sub-pixel
+   accuracy. Points within a few pixels of the border are not trusted.
+3. Fit: the centre line is followed inwards from the border and fitted with a polynomial (up to `extraction.length`
+   px), which is extended to the border. Where it crosses gives the position, its slope the direction and its bending
+   the curvature (only with at least `extraction.min_arc_for_curvature` px of curve).
+4. Width across the stroke and colour along the centre line. Where the width or colour changes along the stroke (two
+   strokes meeting), the end is marked `merged` and the score does not use its width and colour.
+
+Short pieces of curve:
+
+- 5 to 15 px of centre line: a straight line is fitted instead of a polynomial, which gives position and direction
+  but no curvature. These ends are marked `short_stub`. Before, anything under 15 px was rejected.
+- Too small for a centre line (fewer than 8 points): the end is measured from the paint contact on the border. A
+  stroke of width w crossing the border at an angle b from straight-on touches it over w / cos b, so the contact
+  length gives b, the side where the paint lies gives the lean, and the middle of the contact gives the position.
+  These ends get no curvature, their width is not trusted, and they are marked `from_contact`.
+- Ends that meet the border more than `extraction.max_incidence_deg` (75) degrees from straight-on are rejected.
+
+Why these two fixes: the gap between found and exact ends came from ends that extraction missed, not from ends
+measured imprecisely. Putting the missed ends back from the exact ones closed the whole gap on the frescoes
+(148 -> 178), while exact positions and directions alone gave only a few pieces. Most missed ends were short pieces of
+curve. Pieces in the right place (biarc, found ends):
+
+| dataset | original | + short stubs | + stubs from the contact | exact ends |
+|---|---|---|---|---|
+| frescoes | 148 | 159 | 161 | 177 |
+| colour | 145 | 160 | 163 | 177 |
+| multi | 46 | 49 | 49 | 52 |
+| canvases | 71 | 72 | 74 | 80 |
+| **total, of 504** | **410** | **440** | **447** | **486** |
+
+Ends found on the frescoes: 1,113, then 1,174, then 1,200 of 1,329.
+
+Tried and not kept: measuring shallow crossings from the paint contact as well (158 on the frescoes instead of 159),
+and changing the score of an end without a partner, `score.rules.unmatched_score`, from -0.5 to 0 (157) or -0.25
+(161, against 159). The -0.25 gain is small and was tuned on one dataset only.
 
 ## Settings
 
@@ -97,10 +157,10 @@ settings:
 
 A misspelt setting or an impossible value stops the run with a message, so a typo cannot change a result silently.
 Every run writes `results/<experiment>/<date_time>_<script>/` with the complete settings (`config.yaml`), the
-command and the code version (`run.txt`), and its tables (`table.txt`, CSV files). Keep the project in git
-(`git init` once, then commit as you go): `run.txt` then names the commit of the code that made each result. The solver keeps its solutions in
-`RL_puzzle_solver/new_code/data/experiments/<puzzle>/`, in folders named after the score settings, such as
-`biarc_lap_sol_...` or `clothoid_exact_lap_w2c1k0.5_nfa_sol_...` (w, c, k = width, colour, curvature weights).
+command and the code version (`run.txt`), and its tables (`table.txt`, CSV files). The project is kept in git, so
+`run.txt` names the commit of the code that made each result. The solver keeps its solutions in its
+`data/experiments/<puzzle>/` folder, in folders named after the score settings, such as `biarc_lap_sol_...` or
+`clothoid_exact_lap_w2c1k0.5_nfa_sol_...` (w, c, k = width, colour, curvature weights).
 
 ### The score in short
 
@@ -132,20 +192,27 @@ src/curvecont/
     pipeline.py            one picture: make, extract, compare, solve
     solver_bridge.py       runs the group's solver with our R, in a process of its own
 scripts/                   command-line entry points: read the arguments, call the package, print
-tests/                     pytest; tests/data/reference.json holds the numbers of the original scripts
+tests/                     pytest; tests/data/reference.json holds the numbers the tests check
 results/                   written by the scripts (not in git)
 thesis/                    text and figures
 legacy/                    early stand-alone tools, not used by the pipeline
-RL_puzzle_solver/          the group's solver, its own repository (not in git)
 ```
+
+The group's solver is its own repository and is not part of this one.
 
 ## Tests
 
 ```
-pytest                  # everything, about a minute and a half
-pytest -m "not slow"    # without the 64 pair counts of the original scripts, about 20 s
+pytest                  # everything, about two minutes
+pytest -m "not slow"    # without the 64 pair counts on the four test pictures, under a minute
 ruff check .
 ```
+
+`tests/data/reference.json` holds, for four test pictures, the number of exact and found ends and the right / wrong /
+negative pairs for eight score settings. The numbers for found ends were recomputed after the two extraction fixes;
+the numbers for exact ends are those of the original scripts. When extraction is changed on purpose, the tests on
+found ends fail until these numbers are recomputed, which should only be done after checking that the change is an
+improvement.
 
 ## From the previous scripts
 
@@ -171,3 +238,6 @@ ruff check .
 - `Memory allocation still failed` from OpenBLAS: the scripts already use one OpenBLAS thread; close other programs.
 - A cell of `compare.py` shows `failed`: the solver stopped on that puzzle (it can fail in
   `remove_occupied_grid_points`); the message is in `errors.txt` in the results folder.
+- git says `detected dubious ownership`: the folder belongs to the Administrators group, for example because it was
+  made from a window opened as administrator. Run `git config --global --add safe.directory <project folder>` in a
+  normal window.
