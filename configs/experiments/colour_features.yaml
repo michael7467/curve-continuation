@@ -1,0 +1,13 @@
+description: fresco colours, join cost C = C_geometry + 2 C_width + 1 C_colour + 0.5 C_curvature (only for ends not marked merged)
+dataset: datasets/frescoes_colour.yaml
+compare:
+  methods: [biarc, cocircularity]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: lap
+    features:
+      width: 2.0
+      colour: 1.0
+      curvature: 0.5

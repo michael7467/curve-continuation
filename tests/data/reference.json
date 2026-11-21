@@ -1,0 +1,342 @@
+{
+ "pairs": {
+  "circle_3x3_00000|biarc_best|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_best|exact": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_lap|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_lap|exact": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|cocirc_lap|curves": [
+   16,
+   8,
+   0
+  ],
+  "circle_3x3_00000|cocirc_lap|exact": [
+   16,
+   8,
+   0
+  ],
+  "circle_3x3_00000|biarc_order_skip|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_order_skip|exact": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_lap_weights|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_lap_weights|exact": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|clothoid_lap_weights_cc|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|clothoid_lap_weights_cc|exact": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_lap_weights_nfa_edge|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|biarc_lap_weights_nfa_edge|exact": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|clothoid_lap_nfa_puzzle|curves": [
+   16,
+   0,
+   0
+  ],
+  "circle_3x3_00000|clothoid_lap_nfa_puzzle|exact": [
+   16,
+   0,
+   0
+  ],
+  "canvas_05_3x3_00000|biarc_best|curves": [
+   8,
+   6,
+   0
+  ],
+  "canvas_05_3x3_00000|biarc_best|exact": [
+   8,
+   6,
+   4
+  ],
+  "canvas_05_3x3_00000|biarc_lap|curves": [
+   8,
+   6,
+   0
+  ],
+  "canvas_05_3x3_00000|biarc_lap|exact": [
+   8,
+   6,
+   4
+  ],
+  "canvas_05_3x3_00000|cocirc_lap|curves": [
+   8,
+   6,
+   0
+  ],
+  "canvas_05_3x3_00000|cocirc_lap|exact": [
+   8,
+   6,
+   4
+  ],
+  "canvas_05_3x3_00000|biarc_order_skip|curves": [
+   8,
+   6,
+   0
+  ],
+  "canvas_05_3x3_00000|biarc_order_skip|exact": [
+   8,
+   6,
+   4
+  ],
+  "canvas_05_3x3_00000|biarc_lap_weights|curves": [
+   8,
+   2,
+   0
+  ],
+  "canvas_05_3x3_00000|biarc_lap_weights|exact": [
+   8,
+   2,
+   4
+  ],
+  "canvas_05_3x3_00000|clothoid_lap_weights_cc|curves": [
+   8,
+   2,
+   0
+  ],
+  "canvas_05_3x3_00000|clothoid_lap_weights_cc|exact": [
+   8,
+   0,
+   4
+  ],
+  "canvas_05_3x3_00000|biarc_lap_weights_nfa_edge|curves": [
+   8,
+   2,
+   0
+  ],
+  "canvas_05_3x3_00000|biarc_lap_weights_nfa_edge|exact": [
+   8,
+   2,
+   4
+  ],
+  "canvas_05_3x3_00000|clothoid_lap_nfa_puzzle|curves": [
+   8,
+   2,
+   0
+  ],
+  "canvas_05_3x3_00000|clothoid_lap_nfa_puzzle|exact": [
+   0,
+   2,
+   4
+  ],
+  "three_3x3_00000|biarc_best|curves": [
+   12,
+   8,
+   12
+  ],
+  "three_3x3_00000|biarc_best|exact": [
+   22,
+   18,
+   2
+  ],
+  "three_3x3_00000|biarc_lap|curves": [
+   12,
+   4,
+   12
+  ],
+  "three_3x3_00000|biarc_lap|exact": [
+   22,
+   6,
+   2
+  ],
+  "three_3x3_00000|cocirc_lap|curves": [
+   14,
+   20,
+   10
+  ],
+  "three_3x3_00000|cocirc_lap|exact": [
+   22,
+   28,
+   2
+  ],
+  "three_3x3_00000|biarc_order_skip|curves": [
+   12,
+   6,
+   12
+  ],
+  "three_3x3_00000|biarc_order_skip|exact": [
+   22,
+   18,
+   2
+  ],
+  "three_3x3_00000|biarc_lap_weights|curves": [
+   12,
+   4,
+   12
+  ],
+  "three_3x3_00000|biarc_lap_weights|exact": [
+   14,
+   4,
+   10
+  ],
+  "three_3x3_00000|clothoid_lap_weights_cc|curves": [
+   12,
+   6,
+   12
+  ],
+  "three_3x3_00000|clothoid_lap_weights_cc|exact": [
+   22,
+   4,
+   2
+  ],
+  "three_3x3_00000|biarc_lap_weights_nfa_edge|curves": [
+   12,
+   4,
+   12
+  ],
+  "three_3x3_00000|biarc_lap_weights_nfa_edge|exact": [
+   14,
+   4,
+   10
+  ],
+  "three_3x3_00000|clothoid_lap_nfa_puzzle|curves": [
+   4,
+   0,
+   12
+  ],
+  "three_3x3_00000|clothoid_lap_nfa_puzzle|exact": [
+   18,
+   0,
+   2
+  ],
+  "colour_06_3x3_00000|biarc_best|curves": [
+   22,
+   58,
+   4
+  ],
+  "colour_06_3x3_00000|biarc_best|exact": [
+   22,
+   70,
+   4
+  ],
+  "colour_06_3x3_00000|biarc_lap|curves": [
+   20,
+   8,
+   6
+  ],
+  "colour_06_3x3_00000|biarc_lap|exact": [
+   22,
+   8,
+   4
+  ],
+  "colour_06_3x3_00000|cocirc_lap|curves": [
+   24,
+   56,
+   2
+  ],
+  "colour_06_3x3_00000|cocirc_lap|exact": [
+   24,
+   68,
+   2
+  ],
+  "colour_06_3x3_00000|biarc_order_skip|curves": [
+   22,
+   18,
+   4
+  ],
+  "colour_06_3x3_00000|biarc_order_skip|exact": [
+   22,
+   20,
+   4
+  ],
+  "colour_06_3x3_00000|biarc_lap_weights|curves": [
+   20,
+   0,
+   6
+  ],
+  "colour_06_3x3_00000|biarc_lap_weights|exact": [
+   22,
+   0,
+   4
+  ],
+  "colour_06_3x3_00000|clothoid_lap_weights_cc|curves": [
+   22,
+   0,
+   4
+  ],
+  "colour_06_3x3_00000|clothoid_lap_weights_cc|exact": [
+   22,
+   0,
+   4
+  ],
+  "colour_06_3x3_00000|biarc_lap_weights_nfa_edge|curves": [
+   20,
+   0,
+   6
+  ],
+  "colour_06_3x3_00000|biarc_lap_weights_nfa_edge|exact": [
+   22,
+   0,
+   4
+  ],
+  "colour_06_3x3_00000|clothoid_lap_nfa_puzzle|curves": [
+   20,
+   4,
+   4
+  ],
+  "colour_06_3x3_00000|clothoid_lap_nfa_puzzle|exact": [
+   18,
+   4,
+   4
+  ]
+ },
+ "ends": {
+  "circle_3x3_00000": {
+   "exact": 16,
+   "found_ok": 16
+  },
+  "canvas_05_3x3_00000": {
+   "exact": 12,
+   "found_ok": 11
+  },
+  "three_3x3_00000": {
+   "exact": 36,
+   "found_ok": 30
+  },
+  "colour_06_3x3_00000": {
+   "exact": 97,
+   "found_ok": 92
+  }
+ }
+}

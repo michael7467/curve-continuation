@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.venv/
+
+# the group's solver is its own repository (and holds the generated puzzles in new_code/data)
+RL_puzzle_solver/
+
+# generated results: each run writes results/<experiment>/<date_time>_<script>/
+results/*
+!results/.gitkeep

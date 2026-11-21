@@ -1,0 +1,9 @@
+description: several curves per picture (6 pictures), one-to-one matching of the ends on two facing sides (LAP)
+dataset: datasets/multi_curves.yaml
+compare:
+  methods: [biarc, cocircularity]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: lap

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "curvecont"
+version = "1.0.0"
+description = "Curve continuation across fragment borders, as a compatibility for fresco and puzzle reassembly"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "pillow>=9.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+# what the group's RL solver (RL_puzzle_solver/new_code) imports when it solves a puzzle
+solver = ["opencv-python", "shapely", "matplotlib", "natsort", "scikit-fmm", "sympy"]
+dev = ["pytest>=7.0", "ruff>=0.4"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["slow: checks the 64 pair counts of the original scripts (about a minute)"]
+
+[tool.ruff]
+line-length = 140
+target-version = "py310"
+extend-exclude = ["RL_puzzle_solver", "legacy"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["curvecont", "_bootstrap", "conftest"]

@@ -1,0 +1,40 @@
+# several curves in one picture
+# each curve is a circle [cx, cy, r] or x, y as functions of t (t from 0 to 2 pi unless you give t)
+# a curve can have its own thickness, for example  - circle: [300, 300, 120]  thickness: 5
+pictures:
+  - name: two_apart          # two circles that never touch
+    many:
+      - circle: [190, 210, 120]
+      - circle: [420, 400, 140]
+  - name: two_rings          # two rings 30 px apart, same centre
+    many:
+      - circle: [300, 300, 190]
+      - circle: [300, 300, 160]
+  - name: crossing           # a circle and an ellipse that cross each other
+    many:
+      - circle: [300, 300, 170]
+      - x: "300 + 260*cos(t)"
+        y: "300 + 110*sin(t)"
+  - name: three              # two open waves and a circle
+    many:
+      - x: "t"
+        y: "150 + 60*sin(t/50)"
+        t: [30, 570]
+      - x: "t"
+        y: "450 + 60*cos(t/45)"
+        t: [30, 570]
+      - circle: [300, 300, 120]
+  - name: three_rings        # three rings inside each other, slightly oval and turned: 3 ends on many edges
+    many:
+      - x: "300 + 195*cos(t)*cos(0.4) - 180*sin(t)*sin(0.4)"
+        y: "300 + 195*cos(t)*sin(0.4) + 180*sin(t)*cos(0.4)"
+      - x: "300 + 235*cos(t)*cos(-0.3) - 220*sin(t)*sin(-0.3)"
+        y: "300 + 235*cos(t)*sin(-0.3) + 220*sin(t)*cos(-0.3)"
+      - x: "300 + 280*cos(t)*cos(0.2) - 262*sin(t)*sin(0.2)"
+        y: "300 + 280*cos(t)*sin(0.2) + 262*sin(t)*cos(0.2)"
+  - name: four_waves         # four waves that never cross: 1 or 2 ends on most edges
+    many:
+      - {x: "t", y: "75 + 45*sin(t/50 + 0.5)", t: [20, 580]}
+      - {x: "t", y: "225 + 60*sin(t/45 + 2.2)", t: [20, 580]}
+      - {x: "t", y: "375 + 60*sin(t/55 + 4.0)", t: [20, 580]}
+      - {x: "t", y: "525 + 45*sin(t/40 + 1.0)", t: [20, 580]}

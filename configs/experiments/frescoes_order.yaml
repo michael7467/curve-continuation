@@ -1,0 +1,10 @@
+description: fresco-like pictures, one-to-one matching that keeps the order of the ends along the side, bad joins refused
+dataset: datasets/frescoes.yaml
+compare:
+  methods: [biarc, cocircularity]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: order
+      skip_bad_joins: true

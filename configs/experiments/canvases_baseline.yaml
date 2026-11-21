@@ -1,0 +1,9 @@
+description: one closed curve per picture (10 canvases), the first setting - each side keeps its single best join
+dataset: datasets/canvases.yaml
+compare:
+  methods: [biarc, cocircularity]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: best

@@ -1,0 +1,14 @@
+description: fresco colours with all features, curvature checked against the joining clothoid; biarc and clothoid geometry
+dataset: datasets/frescoes_colour.yaml
+compare:
+  methods: [biarc, clothoid]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: lap
+    features:
+      width: 2.0
+      colour: 1.0
+      curvature: 0.5
+      curvature_check: clothoid

@@ -1,0 +1,58 @@
+# Default settings for every run.
+# An experiment file (configs/experiments/*.yaml) lists only what it changes, under "settings:".
+# Paths are relative to the project folder (the folder that holds configs/).
+
+solver:
+  folder: ../RL_puzzle_solver/new_code   # the group's RL solver, never modified; puzzles are written to its data/ folder
+  anchor_index: 0                     # the piece the solver keeps fixed
+  accept_threshold: 0.75
+
+picture:                              # how test pictures are drawn and cut
+  size: 600                           # px, square picture
+  pieces_per_side: 3                  # 3 gives 3 x 3 = 9 pieces
+  margin: 8                           # px removed around every piece
+  thickness: 7                        # px, used when a curve does not give its own
+
+curve:                                # the picture made by scripts/run_pipeline.py (replaced as a whole by an experiment)
+  name: circle
+  circle: [300, 300, 190]             # or  r: "<radius as a function of t>"  or  x, y, t  or  many: [list of curves]
+
+extraction:                           # finding curve ends in piece images (extraction/ends.py)
+  window: 31                          # px, odd: window of the local background
+  sigma: null                         # px, smoothing of the centre line; null = from the stroke width
+  length: 60                          # px, longest piece of curve used to fit an end
+  degree: 3                           # degree of the polynomials fitted to the centre line
+  min_contrast: 30                    # weaker paint is not a curve
+  max_incidence_deg: 75               # curves meeting the border at a shallower angle are not fitted
+  min_arc_for_curvature: 35           # px of curve needed to measure a curvature
+  max_width_spread: 0.2               # width changing more than 20% along an end: two strokes merged, width and colour not trusted
+  max_colour_spread: 0.05             # more than 5% of the centre line in another colour: merged as well
+  max_rms_for_curvature: 0.05         # px, a fit poorer than this gives no trusted curvature
+  match_tolerance: 5                  # px, evaluation only: a found end matches an exact end within this distance
+
+score:                                # the compatibility S of two pieces, from -1 (contradiction) to +1 (good continuation)
+  ends: curves                        # curves = ends found by extraction, exact = ends from the equations
+  geometry:
+    method: biarc                     # biarc, cocircularity or clothoid: the cost of joining two ends
+    tau: 1.0                          # join score s = 1 - cost / tau, clipped to [-1, 1]
+  rules:
+    unmatched_score: -0.5             # value of an end with no partner
+    max_gap: 40                       # px, pieces further apart get S = 0
+    corners: true                     # score diagonal placements, and let ends near a corner go to the diagonal piece
+    corner_px: 25                     # px, how close to a corner counts as near
+  matching:
+    method: lap                       # best (one join), lap (one-to-one) or order (one-to-one keeping the order along the edge)
+    skip_bad_joins: false             # lap and order: refuse a join that is worse than leaving both ends alone
+  features:                           # extra join costs, weight 0 = off
+    width: 0.0                        # weight of (width difference / mean width)^2
+    colour: 0.0                       # weight of (Lab colour difference / colour_scale)^2
+    curvature: 0.0                    # weight of the curvature mismatch, measured over curvature_scale
+    curvature_check: ends             # ends = compare the two ends; clothoid = compare each end with the joining clothoid
+    colour_scale: 50                  # Lab difference worth a full weight
+    curvature_scale: 100              # px
+  significance:                       # a contrario test: support only for joins unlikely between unrelated fragments
+    mode: "off"                       # "off" or nfa (keep the quotes around off)
+    epsilon: 1.0                      # a placement is meaningful when its number of false alarms is below epsilon
+    tests: edge                       # edge: N - 1 tests per edge; puzzle: all N (N - 1) 4 placements
+    samples: 40000                    # random pairs of ends in the chance model
+    seed: 1

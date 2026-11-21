@@ -1,0 +1,9 @@
+description: fresco-like pictures in fresco colours, geometry only (LAP), the reference for the feature experiments
+dataset: datasets/frescoes_colour.yaml
+compare:
+  methods: [biarc, cocircularity]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: lap

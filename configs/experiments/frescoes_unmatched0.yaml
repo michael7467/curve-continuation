@@ -1,0 +1,8 @@
+description: frescoes, LAP, an end without a partner counts 0 instead of -0.5
+dataset: datasets/frescoes.yaml
+settings:
+  score:
+    matching:
+      method: lap
+    rules:
+      unmatched_score: -0.25

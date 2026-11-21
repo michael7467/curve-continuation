@@ -1,0 +1,9 @@
+description: fresco-like pictures (20, many bands each), one-to-one matching of the ends (LAP)
+dataset: datasets/frescoes.yaml
+compare:
+  methods: [biarc, cocircularity]
+  ends: [curves, exact]
+settings:
+  score:
+    matching:
+      method: lap
